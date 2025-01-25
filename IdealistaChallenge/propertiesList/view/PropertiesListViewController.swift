@@ -1,5 +1,5 @@
 //
-//  HouseListViewController.swift
+//  PropertiesListViewController.swift
 //  IdealistaChallenge
 //
 //  Created by Jose Manuel Malagón Alba on 25/1/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HouseListViewController: UIViewController {
+class PropertiesListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

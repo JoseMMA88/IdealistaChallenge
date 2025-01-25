@@ -9,8 +9,8 @@ import Foundation
 import UIKit
 
 public class AppDependencies: NSObject {
-    static func makeHouseList() -> HouseListViewController {
-        let viewController = HouseListViewController()
+    static func makePropertiesList() -> PropertiesListViewController {
+        let viewController = PropertiesListViewController()
 
         return viewController
     }

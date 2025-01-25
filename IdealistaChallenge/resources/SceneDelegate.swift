@@ -18,7 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let navigationController = UINavigationController()
         childCoordinator = AppCoordinator(navigationController: navigationController,
-                                          signal: .houseList)
+                                          signal: .propertiesList)
         childCoordinator?.resolve()
         
         let window = UIWindow(windowScene: windowScene)

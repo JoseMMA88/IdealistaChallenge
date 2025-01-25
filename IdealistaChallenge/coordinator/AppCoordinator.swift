@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 public enum AppSignal {
-    case houseList
+    case propertiesList
 }
 
 public class AppCoordinator: Coordinator {
@@ -32,8 +32,8 @@ public class AppCoordinator: Coordinator {
     public func resolve() {
         if let signal = signal {
             switch signal {
-            case .houseList:
-                navigateToHouseList()
+            case .propertiesList:
+                navigateToPropertiesList()
             }
         }
     }
@@ -42,8 +42,8 @@ public class AppCoordinator: Coordinator {
 
 extension AppCoordinator {
     
-    private func navigateToHouseList() {
-        let vc = AppDependencies.makeHouseList()
+    private func navigateToPropertiesList() {
+        let vc = AppDependencies.makePropertiesList()
         navigationController.pushViewController(vc, animated: false)
     }
     
