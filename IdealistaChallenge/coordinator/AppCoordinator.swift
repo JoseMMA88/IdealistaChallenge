@@ -43,9 +43,19 @@ public class AppCoordinator: Coordinator {
 extension AppCoordinator {
     
     private func navigateToPropertiesList() {
-        let vc = AppDependencies.makePropertiesList()
+        let vc = AppDependencies.makePropertiesList(signalDelegate: self)
         navigationController.pushViewController(vc, animated: false)
     }
     
+}
+
+extension AppCoordinator: PropertiesListSignalDelegate {
+    
+    public func signalTriggered(_ signal: PropertiesListSignal) {
+        switch signal {
+        case .goToDetail:
+            print("[COODINATOR] GO TO DETAIL")
+        }
+    }
 }
 

@@ -9,9 +9,14 @@ import Foundation
 import UIKit
 
 public class AppDependencies: NSObject {
-    static func makePropertiesList() -> PropertiesListViewController {
-        let viewController = PropertiesListViewController()
-
+    static func makePropertiesList(signalDelegate: PropertiesListSignalDelegate) -> PropertiesListViewController {
+        let interactor = PropertiesListInteractor()
+        let presenter = PropertiesListPresenter(signalDelegate: signalDelegate,
+                                                interactor: interactor)
+        
+        let viewController = PropertiesListViewController(presenter: presenter)
+        presenter.ui = viewController
+        
         return viewController
     }
 }
