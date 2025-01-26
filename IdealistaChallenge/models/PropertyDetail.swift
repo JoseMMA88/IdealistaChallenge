@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PropertyDetail: Codable {
+public struct PropertyDetail: Codable {
     let adid: Int
     let price: Int
     let priceInfo: PriceInfo

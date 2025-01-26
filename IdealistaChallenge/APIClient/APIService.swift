@@ -29,20 +29,6 @@ final class APIService {
     
     // MARK: - Public functions
     
-    // TODO: Move to Interactor
-    static func fetchProperties(completion: @escaping (Result<[Property], Error>) -> Void) {
-        execute(APIRequest(endPoint: .list),
-                expecting: [Property].self,
-                completion: completion)
-    }
-    
-    // TODO: Move to Interactor
-    static func fetchPropertyDetail(completion: @escaping (Result<PropertyDetail, Error>) -> Void) {
-        execute(APIRequest(endPoint: .detail),
-                expecting: PropertyDetail.self,
-                completion: completion)
-    }
-    
     static func execute<T: Codable>(_ request: APIRequest,
                                     expecting type: T.Type,
                                     completion: @escaping (Result<T, Error>) -> Void) {
@@ -73,7 +59,7 @@ final class APIService {
     
     // MARK: - Functions
         
-    static func request(from apiRequest: APIRequest) -> URLRequest? {
+    private static func request(from apiRequest: APIRequest) -> URLRequest? {
         guard let url = apiRequest.url else { return nil }
         
         var request = URLRequest(url: url)
