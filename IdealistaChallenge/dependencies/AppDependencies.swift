@@ -19,4 +19,16 @@ public class AppDependencies: NSObject {
         
         return viewController
     }
+    
+    static func makePropertyDetail(with model: PropertyCollectionViewCell.Model,
+                                   signalDelegate: PropertyDetailSignalDelegate) -> PropertyDetailViewController {
+        let interactor = PropertyDetailInteractor()
+        let presenter = PropertyDetailPresenter(signalDelegate: signalDelegate,
+                                                interactor: interactor)
+        
+        let viewController = PropertyDetailViewController(presenter: presenter)
+        presenter.ui = viewController
+        
+        return viewController
+    }
 }

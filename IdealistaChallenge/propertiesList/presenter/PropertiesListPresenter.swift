@@ -130,8 +130,8 @@ final class PropertiesListPresenter: BasePresenter, PropertiesListPresenterProto
 
 extension PropertiesListPresenter {
     
-    func didSelect() {
-        
+    func didSelect(at indexPath: IndexPath) {
+        signalDelegate?.signalTriggered(.goToDetail(properties[indexPath.row]))
     }
     
     func didTapFavButton() {

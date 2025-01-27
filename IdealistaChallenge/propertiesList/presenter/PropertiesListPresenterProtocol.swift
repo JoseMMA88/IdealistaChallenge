@@ -10,7 +10,7 @@ import Foundation
 // MARK: - Signal Enum
 
 public enum PropertiesListSignal {
-    case goToDetail
+    case goToDetail(PropertyCollectionViewCell.Model)
 }
 
 public protocol PropertiesListSignalDelegate: AnyObject {
@@ -24,7 +24,7 @@ public protocol PropertiesListPresenterProtocol where Self: BasePresenter {
     
     var sections: [PropertiesListViewController.Model.Section] { get set }
     
-    func didSelect()
+    func didSelect(at indexPath: IndexPath)
     func didTapFavButton()
 }
 

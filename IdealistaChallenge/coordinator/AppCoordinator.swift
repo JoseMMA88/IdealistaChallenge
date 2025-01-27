@@ -47,15 +47,35 @@ extension AppCoordinator {
         navigationController.pushViewController(vc, animated: false)
     }
     
+    private func navigateToPropertyDetail(_ property: PropertyCollectionViewCell.Model) {
+        let vc = AppDependencies.makePropertyDetail(with: property, signalDelegate: self)
+        navigationController.pushViewController(vc, animated: false)
+    }
+    
 }
+
+// MARK: - PropertiesListSignalDelegate
 
 extension AppCoordinator: PropertiesListSignalDelegate {
     
     public func signalTriggered(_ signal: PropertiesListSignal) {
         switch signal {
-        case .goToDetail:
-            print("[COODINATOR] GO TO DETAIL")
+        case .goToDetail(let property):
+            navigateToPropertyDetail(property)
         }
     }
 }
+
+// MARK: - PropertyDetailSignalDelegate
+
+extension AppCoordinator: PropertyDetailSignalDelegate {
+    
+    public func signalTriggered(_ signal: PropertyDetailSignal) {
+        switch signal {
+        case .goBack:
+            navigationController.popViewController(animated: false)
+        }
+    }
+}
+
 
