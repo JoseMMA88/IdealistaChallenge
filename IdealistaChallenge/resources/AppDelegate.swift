@@ -13,7 +13,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.titleTextAttributes = [
+            .foregroundColor: UIColor.init(named: "AccentColor") ?? .white,
+            .font: UIFont.systemFont(ofSize: 18, weight: .bold)
+        ]
+        appearance.largeTitleTextAttributes = [
+            .foregroundColor: UIColor.init(named: "AccentColor") ?? .white,
+            .font: UIFont.systemFont(ofSize: 32, weight: .bold)
+        ]
+
+        // Change navBar style
+        let navigationBar = UINavigationBar.appearance()
+        navigationBar.standardAppearance = appearance
+        navigationBar.scrollEdgeAppearance = appearance
+        navigationBar.compactAppearance = appearance
+        
         return true
     }
 

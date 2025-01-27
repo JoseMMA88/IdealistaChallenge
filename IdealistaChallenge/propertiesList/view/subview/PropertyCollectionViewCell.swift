@@ -18,6 +18,8 @@ extension PropertyCollectionViewCell {
         let roomsNumber: String
         let bathroomsNumber: String
         let propertyType: String
+        let operationType: String
+        let isFavorite: Bool = false
         
         public func fetchImage(completion: @escaping(Result<Data, Error>) -> Void) {
             guard let url = imageURL else {
@@ -61,6 +63,7 @@ public final class PropertyCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = .label
         label.font = .systemFont(ofSize: 23, weight: .bold)
+        label.numberOfLines = 0
         
         return label
     }()
@@ -98,17 +101,16 @@ public final class PropertyCollectionViewCell: UICollectionViewCell {
     }()
     
     lazy private var roomsAndBathsStackView: UIStackView = {
-        
         let auxStackView = UIStackView(arrangedSubviews: [
             roomsNumberLabel,
             bathNumberLabel
         ])
+        auxStackView.spacing = 10
         
         let stackView = UIStackView(arrangedSubviews: [
             auxStackView,
             UIView()
         ])
-        stackView.spacing = 10
         
         return stackView
     }()
@@ -123,11 +125,53 @@ public final class PropertyCollectionViewCell: UICollectionViewCell {
     
     lazy private var propertyTypeView: UIView = {
         let view = UIView()
-        view.backgroundColor = .systemGray6
-        view.center(view: propertyTypeLabel)
+        view.backgroundColor = .secondarySystemFill
+        view.fill(with: propertyTypeLabel, edges: UIEdgeInsets(top: 5,
+                                                               left: 10,
+                                                               bottom: 5,
+                                                               right: 10))
+        view.layer.cornerRadius = 5
+        
+        return view
+    }()
+    
+    lazy private var operationTypeLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .label
+        label.font = .systemFont(ofSize: 18, weight: .medium)
+        
+        return label
+    }()
+    
+    lazy private var operationTypeView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .secondarySystemFill
+        view.fill(with: operationTypeLabel, edges: UIEdgeInsets(top: 5,
+                                                               left: 10,
+                                                               bottom: 5,
+                                                               right: 10))
         view.layer.cornerRadius = 8
         
         return view
+    }()
+    
+    lazy private var typesStackView: UIStackView = {
+        let auxStackView = UIStackView(arrangedSubviews: [
+            propertyTypeView,
+            operationTypeView
+        ])
+        auxStackView.spacing = 10
+        
+        let view = UIView()
+        view.fill(with: auxStackView)
+        
+        let stackView = UIStackView(arrangedSubviews: [
+            view,
+            UIView()
+        ])
+        stackView.axis = .horizontal
+        
+        return stackView
     }()
     
     lazy private var infoView: UIView = {
@@ -136,7 +180,7 @@ public final class PropertyCollectionViewCell: UICollectionViewCell {
             locationLabel,
             priceLabel,
             roomsAndBathsStackView,
-            propertyTypeView
+            typesStackView
         ])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = 10
@@ -163,24 +207,52 @@ public final class PropertyCollectionViewCell: UICollectionViewCell {
     
     lazy private var contactView: UIView = {
         let view = UIView()
-        let imageView = UIImageView(image: UIImage(systemName: "person.circle"))
+        let imageView = UIImageView(image: UIImage(systemName: "text.bubble"))
         view.center(view: imageView)
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+
+        NSLayoutConstraint.activate([
+            imageView.widthAnchor.constraint(equalToConstant: 35),
+            imageView.heightAnchor.constraint(equalToConstant: 35)
+        ])
         
         return view
     }()
     
     lazy private var callView: UIView = {
         let view = UIView()
-        let imageView = UIImageView(image: UIImage(systemName: "phone.fill"))
+        let imageView = UIImageView(image: UIImage(systemName: "phone"))
         view.center(view: imageView)
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+
+        NSLayoutConstraint.activate([
+            imageView.widthAnchor.constraint(equalToConstant: 35),
+            imageView.heightAnchor.constraint(equalToConstant: 35)
+        ])
         
         return view
     }()
     
+    lazy private var favImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(systemName: "heart"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+
+        NSLayoutConstraint.activate([
+            imageView.widthAnchor.constraint(equalToConstant: 35),
+            imageView.heightAnchor.constraint(equalToConstant: 35)
+        ])
+        
+        return imageView
+    }()
+    
     lazy private var favView: UIView = {
         let view = UIView()
-        let imageView = UIImageView(image: UIImage(systemName: "heart.fill"))
-        view.center(view: imageView)
+        view.center(view: favImageView)
         
         return view
     }()
@@ -264,8 +336,12 @@ public final class PropertyCollectionViewCell: UICollectionViewCell {
         locationLabel.text = model.location
         priceLabel.text = model.price
         roomsNumberLabel.text = model.roomsNumber
-        bathNumberLabel.text = model.roomsNumber
+        bathNumberLabel.text = model.bathroomsNumber
         propertyTypeLabel.text = model.propertyType
+        operationTypeLabel.text = model.operationType
+        
+        let imageName = model.isFavorite ? "heart.fill" : "heart"
+        favImageView.image = UIImage(systemName: imageName)
         
         model.fetchImage { [weak self]  result in
             guard let self = self else { return }
