@@ -49,7 +49,7 @@ extension AppCoordinator {
     
     private func navigateToPropertyDetail(_ property: PropertyCollectionViewCell.Model) {
         let vc = AppDependencies.makePropertyDetail(with: property, signalDelegate: self)
-        navigationController.pushViewController(vc, animated: false)
+        navigationController.pushViewController(vc, animated: true)
     }
     
 }

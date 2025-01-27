@@ -10,15 +10,9 @@ import UIKit
 // MARK: - Model
 
 extension PropertyCollectionViewCell {
-    public struct Model: Hashable {
+    public struct Model {
         let imageURL: URL?
-        let title: String
-        let location: String
-        let price: String
-        let roomsNumber: String
-        let bathroomsNumber: String
-        let propertyType: String
-        let operationType: String
+        let generalInfoModel: GeneralInfoView.Model
         let isFavorite: Bool = false
         
         public func fetchImage(completion: @escaping(Result<Data, Error>) -> Void) {
@@ -59,146 +53,15 @@ public final class PropertyCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    lazy private var titleLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .label
-        label.font = .systemFont(ofSize: 23, weight: .bold)
-        label.numberOfLines = 0
-        
-        return label
-    }()
-    
-    lazy private var locationLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .label
-        label.font = .systemFont(ofSize: 18, weight: .medium)
-        
-        return label
-    }()
-    
-    lazy private var priceLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .label
-        label.font = .systemFont(ofSize: 30, weight: .bold)
-        
-        return label
-    }()
-    
-    lazy private var roomsNumberLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .label
-        label.font = .systemFont(ofSize: 16, weight: .medium)
-        
-        return label
-    }()
-    
-    lazy private var bathNumberLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .label
-        label.font = .systemFont(ofSize: 16, weight: .medium)
-        
-        return label
-    }()
-    
-    lazy private var roomsAndBathsStackView: UIStackView = {
-        let auxStackView = UIStackView(arrangedSubviews: [
-            roomsNumberLabel,
-            bathNumberLabel
-        ])
-        auxStackView.spacing = 10
-        
-        let stackView = UIStackView(arrangedSubviews: [
-            auxStackView,
-            UIView()
-        ])
-        
-        return stackView
-    }()
-    
-    lazy private var propertyTypeLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .label
-        label.font = .systemFont(ofSize: 18, weight: .medium)
-        
-        return label
-    }()
-    
-    lazy private var propertyTypeView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .secondarySystemFill
-        view.fill(with: propertyTypeLabel, edges: UIEdgeInsets(top: 5,
-                                                               left: 10,
-                                                               bottom: 5,
-                                                               right: 10))
-        view.layer.cornerRadius = 5
-        
-        return view
-    }()
-    
-    lazy private var operationTypeLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .label
-        label.font = .systemFont(ofSize: 18, weight: .medium)
-        
-        return label
-    }()
-    
-    lazy private var operationTypeView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .secondarySystemFill
-        view.fill(with: operationTypeLabel, edges: UIEdgeInsets(top: 5,
-                                                               left: 10,
-                                                               bottom: 5,
-                                                               right: 10))
-        view.layer.cornerRadius = 8
-        
-        return view
-    }()
-    
-    lazy private var typesStackView: UIStackView = {
-        let auxStackView = UIStackView(arrangedSubviews: [
-            propertyTypeView,
-            operationTypeView
-        ])
-        auxStackView.spacing = 10
-        
-        let view = UIView()
-        view.fill(with: auxStackView)
-        
-        let stackView = UIStackView(arrangedSubviews: [
-            view,
-            UIView()
-        ])
-        stackView.axis = .horizontal
-        
-        return stackView
-    }()
-    
-    lazy private var infoView: UIView = {
-        let stackView = UIStackView(arrangedSubviews: [
-            titleLabel,
-            locationLabel,
-            priceLabel,
-            roomsAndBathsStackView,
-            typesStackView
-        ])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = 10
-        stackView.axis = .vertical
-        
-        let view = UIView()
-        view.fill(with: stackView, edges: UIEdgeInsets(top: 20,
-                                                       left: 16,
-                                                       bottom: 20,
-                                                       right: 16))
+    lazy private var generalInfoView: GeneralInfoView = {
+        let view = GeneralInfoView()
         
         return view
     }()
     
     lazy private var imageAndInfoStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-            imageView,
-            infoView
+            imageView
         ])
         stackView.axis = .vertical
         
@@ -300,7 +163,7 @@ public final class PropertyCollectionViewCell: UICollectionViewCell {
         contentView.backgroundColor = .secondarySystemBackground
         setUpLayer()
         
-        addConstraints()
+        contentView.fill(with: mainView)
     }
     
     required init?(coder: NSCoder) {
@@ -314,31 +177,15 @@ public final class PropertyCollectionViewCell: UICollectionViewCell {
         setUpLayer()
     }
     
-    private func addConstraints() {
-        contentView.addSubview(mainView)
-        mainView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            mainView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-            mainView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
-            mainView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            mainView.topAnchor.constraint(equalTo: contentView.topAnchor),
-        ])
-    }
-    
     public override func prepareForReuse() {
         super.prepareForReuse()
         imageView.image = nil
-        titleLabel.text = nil
     }
     
     public func configure(with model: Model) {
-        titleLabel.text = model.title
-        locationLabel.text = model.location
-        priceLabel.text = model.price
-        roomsNumberLabel.text = model.roomsNumber
-        bathNumberLabel.text = model.bathroomsNumber
-        propertyTypeLabel.text = model.propertyType
-        operationTypeLabel.text = model.operationType
+        generalInfoView.configure(with: model.generalInfoModel)
+        imageAndInfoStackView.addArrangedSubview(generalInfoView)
+        imageAndInfoStackView.layoutIfNeeded()
         
         let imageName = model.isFavorite ? "heart.fill" : "heart"
         favImageView.image = UIImage(systemName: imageName)

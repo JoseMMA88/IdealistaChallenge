@@ -12,7 +12,8 @@ import UIKit
 extension PropertyDetailViewController {
     public struct  Model {
         public enum Product {
-            case carrousel
+            case carousel(imagesUrls: [URL])
+            case description(DescriptionTableViewCell.Model)
         }
         
         public struct Section {
@@ -28,13 +29,31 @@ public final class PropertyDetailViewController: UIViewController {
     // MARK: - Properties
     
     private let presenter: PropertyDetailPresenterProtocol
+    var sections: [Model.Section]
     
     // MARK: - Views
+    
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .plain)
+        tableView.backgroundColor = .white
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.showsVerticalScrollIndicator = false
+        tableView.bounces = false
+        tableView.backgroundColor = .systemBackground
+        tableView.register(ImagesCarouselTableViewCell.self,
+                           forCellReuseIdentifier: ImagesCarouselTableViewCell.identifier)
+        tableView.register(DescriptionTableViewCell.self,
+                           forCellReuseIdentifier: DescriptionTableViewCell.identifier)
+        
+        return tableView
+    }()
     
     // MARK: - initializers
     
     init(presenter: PropertyDetailPresenterProtocol) {
         self.presenter = presenter
+        self.sections = presenter.sections
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -47,13 +66,59 @@ public final class PropertyDetailViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .green
+        view.backgroundColor = .systemBackground
         title = presenter.title
         presenter.viewDidLoad()
     }
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        view.fill(with: tableView)
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension PropertyDetailViewController: UITableViewDelegate {
+
+}
+
+// MARK: - UITableViewDataSource
+
+extension PropertyDetailViewController: UITableViewDataSource {
+    
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        sections.count
+    }
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return sections[section].product.count
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let section = sections[indexPath.section]
+        
+        switch section.product[indexPath.row] {
+        case .carousel(let model):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ImagesCarouselTableViewCell.identifier,
+                                                           for: indexPath) as? ImagesCarouselTableViewCell else {
+                
+                return UITableViewCell()
+            }
+            cell.configure(with: model)
+            
+            return cell
+            
+        case .description(let model):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DescriptionTableViewCell.identifier,
+                                                           for: indexPath) as? DescriptionTableViewCell else {
+                
+                return UITableViewCell()
+            }
+            cell.configure(with: model)
+            
+            return cell
+        }
     }
 }
 
@@ -62,5 +127,8 @@ public final class PropertyDetailViewController: UIViewController {
 extension PropertyDetailViewController: PropertyDetailPresenterDelegate {
     
     public func refresh() {
+        sections = presenter.sections
+        tableView.reloadData()
+        tableView.layoutIfNeeded()
     }
 }

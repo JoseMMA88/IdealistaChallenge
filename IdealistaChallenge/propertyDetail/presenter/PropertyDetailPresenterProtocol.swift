@@ -20,6 +20,8 @@ public protocol PropertyDetailSignalDelegate: AnyObject {
 public protocol PropertyDetailPresenterProtocol where Self: BasePresenter {
     var ui: PropertyDetailPresenterDelegate? { get set }
     var title: String { get }
+    
+    var sections: [PropertyDetailViewController.Model.Section] { get set }
 }
 
 public protocol PropertyDetailPresenterDelegate: BasePresenterDelegate {
