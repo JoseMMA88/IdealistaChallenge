@@ -7,13 +7,28 @@
 
 import UIKit
 
+// MARK: - Cell Delegate
+
+protocol PropertyCollectionViewCellDelegate: AnyObject {
+    func propertyCollectionViewCell(_ cell: PropertyCollectionViewCell,
+                                    didTapFavoriteButtonWith model: PropertyCollectionViewCell.Model)
+}
+
 // MARK: - Model
 
 extension PropertyCollectionViewCell {
-    public struct Model {
+    public class Model {
         let imageURL: URL?
         let generalInfoModel: GeneralInfoView.Model
-        let isFavorite: Bool = false
+        var isFavorite: Bool = false
+
+        init(imageURL: URL?,
+             generalInfoModel: GeneralInfoView.Model,
+             isFavorite: Bool = false) {
+            self.imageURL = imageURL
+            self.generalInfoModel = generalInfoModel
+            self.isFavorite = isFavorite
+        }
         
         public func fetchImage(completion: @escaping(Result<Data, Error>) -> Void) {
             guard let url = imageURL else {
@@ -34,6 +49,11 @@ public final class PropertyCollectionViewCell: UICollectionViewCell {
     static var identifier: String {
         String(describing: self)
     }
+    
+    weak var delegate: PropertyCollectionViewCellDelegate?
+    var model: Model?
+    
+    // MARK: - Views
     
     lazy private var imageView: UIImageView = {
         let imageView = UIImageView()
@@ -84,33 +104,33 @@ public final class PropertyCollectionViewCell: UICollectionViewCell {
         return view
     }()
     
-    lazy private var callView: UIView = {
-        let view = UIView()
-        let imageView = UIImageView(image: UIImage(systemName: "phone"))
-        view.center(view: imageView)
-        
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-
-        NSLayoutConstraint.activate([
-            imageView.widthAnchor.constraint(equalToConstant: 35),
-            imageView.heightAnchor.constraint(equalToConstant: 35)
-        ])
-        
-        return view
-    }()
-    
     lazy private var favImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "heart"))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
+        imageView.isUserInteractionEnabled = true
 
         NSLayoutConstraint.activate([
             imageView.widthAnchor.constraint(equalToConstant: 35),
             imageView.heightAnchor.constraint(equalToConstant: 35)
         ])
         
+        let button = UIButton()
+        button.addTarget(self, action: #selector(favButtonTapped), for: .touchUpInside)
+        
+        imageView.fill(with: button)
+        
         return imageView
+    }()
+    
+    lazy private var favDateLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor(named: "AccentColor")
+        label.font = .systemFont(ofSize: 10, weight: .regular)
+        label.isHidden = true
+        label.textAlignment = .center
+        
+        return label
     }()
     
     lazy private var favView: UIView = {
@@ -120,11 +140,21 @@ public final class PropertyCollectionViewCell: UICollectionViewCell {
         return view
     }()
     
+    lazy private var favStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            favImageView,
+            favDateLabel
+        ])
+        stackView.axis = .vertical
+        stackView.distribution = .fillProportionally
+        
+        return stackView
+    }()
+    
     lazy private var buttonsStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             contactView,
-            callView,
-            favView
+            favStackView
         ])
         stackView.distribution = .fillEqually
         
@@ -164,6 +194,7 @@ public final class PropertyCollectionViewCell: UICollectionViewCell {
         setUpLayer()
         
         contentView.fill(with: mainView)
+        contentView.bringSubviewToFront(favImageView)
     }
     
     required init?(coder: NSCoder) {
@@ -180,15 +211,25 @@ public final class PropertyCollectionViewCell: UICollectionViewCell {
     public override func prepareForReuse() {
         super.prepareForReuse()
         imageView.image = nil
+        favDateLabel.text = nil
     }
     
     public func configure(with model: Model) {
+        self.model = model
         generalInfoView.configure(with: model.generalInfoModel)
         imageAndInfoStackView.addArrangedSubview(generalInfoView)
         imageAndInfoStackView.layoutIfNeeded()
         
         let imageName = model.isFavorite ? "heart.fill" : "heart"
         favImageView.image = UIImage(systemName: imageName)
+        
+        if model.isFavorite {
+            favDateLabel.isHidden = false
+            favDateLabel.text = getDateString()
+        } else {
+            favDateLabel.isHidden = true
+            favDateLabel.text = ""
+        }
         
         model.fetchImage { [weak self]  result in
             guard let self = self else { return }
@@ -206,10 +247,26 @@ public final class PropertyCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    @objc func favButtonTapped() {
+        guard let model = model else { return }
+        delegate?.propertyCollectionViewCell(self, didTapFavoriteButtonWith: model)
+    }
+    
     private func setUpLayer() {
         contentView.layer.cornerRadius = 8
         contentView.layer.borderWidth = 2
         contentView.layer.borderColor = UIColor.separator.cgColor
     }
+    
+    private func getDateString() -> String {
+        let currentDate = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .none
+        dateFormatter.locale = Locale.current
+        
+        return dateFormatter.string(from: currentDate)
+    }
+        
 }
 

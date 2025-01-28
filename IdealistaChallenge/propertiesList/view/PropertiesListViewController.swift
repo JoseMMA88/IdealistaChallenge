@@ -108,7 +108,7 @@ extension PropertiesListViewController: UICollectionViewDataSource {
             else {
                 fatalError("Unsopported cell")
             }
-            
+            cell.delegate = self
             cell.configure(with: model)
             
             return cell
@@ -149,5 +149,20 @@ extension PropertiesListViewController: PropertiesListPresenterDelegate {
         sections = presenter.sections
         collectionView.reloadData()
         collectionView.layoutIfNeeded()
+    }
+    
+    public func reloadRow(at indexPath: IndexPath) {
+        collectionView.reloadItems(at: [indexPath])
+    }
+}
+
+// MARK: - PropertiesListViewController Delegate
+
+extension PropertiesListViewController: PropertyCollectionViewCellDelegate {
+    func propertyCollectionViewCell(_ cell: PropertyCollectionViewCell,
+                                    didTapFavoriteButtonWith model: PropertyCollectionViewCell.Model) {
+        if let indexPath = collectionView.indexPath(for: cell) {
+            presenter.didTapFavButton(model, at: indexPath)
+        }
     }
 }

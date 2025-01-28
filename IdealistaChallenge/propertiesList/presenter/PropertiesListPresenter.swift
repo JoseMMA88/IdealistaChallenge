@@ -58,7 +58,8 @@ final class PropertiesListPresenter: BasePresenter, PropertiesListPresenterProto
     private func getPropertiesSection() -> PropertiesListViewController.Model.Section? {
         let cells: [PropertiesListViewController.Model.Product] = properties.compactMap {
             .property(.init(imageURL: $0.imageURL,
-                            generalInfoModel: $0.generalInfoModel))
+                            generalInfoModel: $0.generalInfoModel,
+                            isFavorite: $0.isFavorite))
         }
         
         return PropertiesListViewController.Model.Section.init(product: cells)
@@ -114,7 +115,10 @@ extension PropertiesListPresenter {
         signalDelegate?.signalTriggered(.goToDetail(properties[indexPath.row]))
     }
     
-    func didTapFavButton() {
-        
+    func didTapFavButton(_ model: PropertyCollectionViewCell.Model, at indexPath: IndexPath) {
+        model.isFavorite.toggle()
+        properties[indexPath.row] = model
+        _sections = []
+        ui?.reloadRow(at: indexPath)
     }
 }

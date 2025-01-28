@@ -25,9 +25,10 @@ public protocol PropertiesListPresenterProtocol where Self: BasePresenter {
     var sections: [PropertiesListViewController.Model.Section] { get set }
     
     func didSelect(at indexPath: IndexPath)
-    func didTapFavButton()
+    func didTapFavButton(_ model:PropertyCollectionViewCell.Model, at indexPath: IndexPath)
 }
 
 public protocol PropertiesListPresenterDelegate: BasePresenterDelegate {
     func refresh()
+    func reloadRow(at indexPath: IndexPath)
 }
