@@ -14,6 +14,8 @@ extension PropertyDetailViewController {
         public enum Product {
             case carousel(imagesUrls: [URL])
             case description(DescriptionTableViewCell.Model)
+            case moreCharacteristics(MoreCharacteristicsTableViewCell.Model)
+            case energyCertification(EnergyCertificationTableViewCell.Model)
         }
         
         public struct Section {
@@ -45,6 +47,10 @@ public final class PropertyDetailViewController: UIViewController {
                            forCellReuseIdentifier: ImagesCarouselTableViewCell.identifier)
         tableView.register(DescriptionTableViewCell.self,
                            forCellReuseIdentifier: DescriptionTableViewCell.identifier)
+        tableView.register(MoreCharacteristicsTableViewCell.self,
+                           forCellReuseIdentifier: MoreCharacteristicsTableViewCell.identifier)
+        tableView.register(EnergyCertificationTableViewCell.self,
+                           forCellReuseIdentifier: EnergyCertificationTableViewCell.identifier)
         
         return tableView
     }()
@@ -60,7 +66,7 @@ public final class PropertyDetailViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     // MARK: - Life cycle
     
     public override func viewDidLoad() {
@@ -80,7 +86,7 @@ public final class PropertyDetailViewController: UIViewController {
 // MARK: - UITableViewDelegate
 
 extension PropertyDetailViewController: UITableViewDelegate {
-
+    
 }
 
 // MARK: - UITableViewDataSource
@@ -112,6 +118,26 @@ extension PropertyDetailViewController: UITableViewDataSource {
         case .description(let model):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DescriptionTableViewCell.identifier,
                                                            for: indexPath) as? DescriptionTableViewCell else {
+                
+                return UITableViewCell()
+            }
+            cell.configure(with: model)
+            
+            return cell
+            
+        case .moreCharacteristics(let model):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: MoreCharacteristicsTableViewCell.identifier,
+                                                           for: indexPath) as? MoreCharacteristicsTableViewCell else {
+                
+                return UITableViewCell()
+            }
+            cell.configure(with: model)
+            
+            return cell
+            
+        case .energyCertification(let model):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: EnergyCertificationTableViewCell.identifier,
+                                                           for: indexPath) as? EnergyCertificationTableViewCell else {
                 
                 return UITableViewCell()
             }

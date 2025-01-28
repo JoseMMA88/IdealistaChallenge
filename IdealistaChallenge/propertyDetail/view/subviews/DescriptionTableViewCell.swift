@@ -19,6 +19,8 @@ extension DescriptionTableViewCell {
     }
 }
 
+// MARK: - TableViewCell
+
 public final class DescriptionTableViewCell: UITableViewCell {
     
     // MARK: - Properties

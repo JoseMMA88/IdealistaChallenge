@@ -74,8 +74,27 @@ final class PropertyDetailPresenter: BasePresenter, PropertyDetailPresenterProto
                 self.ui?.refresh()
             }
         }))
-        
         cells.append(descriptionCell)
+        
+        let moreCharacteristics = propertyDetail.moreCharacteristics
+        let communityCosts = moreCharacteristics.communityCosts
+        let flatLocation = moreCharacteristics.flatLocation
+        let constructedArea = moreCharacteristics.constructedArea
+        let moreCharacteristicsCell: PropertyDetailViewController.Model.Product = .moreCharacteristics(.init(communityCosts: communityCosts,
+                                                                                                             flatLocation: flatLocation,
+                                                                                                             constructedArea: constructedArea,
+                                                                                                             floor: moreCharacteristics.floor,
+                                                                                                             status: moreCharacteristics.status,
+                                                                                                             lift: moreCharacteristics.lift,
+                                                                                                             boxroom: moreCharacteristics.boxroom,
+                                                                                                             isDuplex: moreCharacteristics.isDuplex))
+        cells.append(moreCharacteristicsCell)
+        
+        let energyCertType = moreCharacteristics.energyCertificationType
+        let emissionsType = moreCharacteristics.energyCertificationType
+        let energyCertificationCell: PropertyDetailViewController.Model.Product = .energyCertification(.init(energyConsumptionType: energyCertType,
+                                                                                                             emissionsType: emissionsType))
+        cells.append(energyCertificationCell)
         
         return PropertyDetailViewController.Model.Section.init(product: cells)
     }
