@@ -152,7 +152,9 @@ extension PropertiesListViewController: PropertiesListPresenterDelegate {
     }
     
     public func reloadRow(at indexPath: IndexPath) {
-        collectionView.reloadItems(at: [indexPath])
+        DispatchQueue.main.async {
+            self.collectionView.reloadItems(at: [indexPath])
+        }
     }
 }
 

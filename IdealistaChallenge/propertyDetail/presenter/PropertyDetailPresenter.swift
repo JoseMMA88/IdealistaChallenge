@@ -17,17 +17,22 @@ final class PropertyDetailPresenter: BasePresenter, PropertyDetailPresenterProto
     public weak var ui: PropertyDetailPresenterDelegate?
     let interactor: PropertyDetailInteractorProtocol
     var propertyDetail: PropertyDetail?
-    var isDescExpanded: Bool = false
+    var _isDescExpanded: Bool = false
         
     // MARK: - Presenter Protocol
     
     public var title: String {
-        return "Detalles de la propiedad"
+        return "Property Detail"
     }
     
     var sections: [PropertyDetailViewController.Model.Section] {
         get { return _sections.isEmpty ? getSections() : _sections }
         set { _sections = newValue }
+    }
+    
+    var isDescExpanded: Bool {
+        get { return _isDescExpanded }
+        set { _isDescExpanded = newValue }
     }
     
     // MARK: - Initilization
@@ -67,13 +72,7 @@ final class PropertyDetailPresenter: BasePresenter, PropertyDetailPresenterProto
         let descriptionCell: PropertyDetailViewController.Model.Product = .description(.init(price: propertyDetail.priceInfo.amount ?? 0,
                                                                                              currency: propertyDetail.priceInfo.currencySuffix ?? "$",
                                                                                              description: propertyDetail.propertyComment,
-                                                                                             isExpanded: isDescExpanded,
-                                                                                             action: {
-            self.isDescExpanded.toggle()
-            DispatchQueue.main.async {
-                self.ui?.refresh()
-            }
-        }))
+                                                                                             isExpanded: isDescExpanded))
         cells.append(descriptionCell)
         
         let moreCharacteristics = propertyDetail.moreCharacteristics
@@ -118,6 +117,10 @@ final class PropertyDetailPresenter: BasePresenter, PropertyDetailPresenterProto
 
 // MARK: - Presenteder Delegate Functions
 
-extension PropertiesListPresenter {
+extension PropertyDetailPresenter {
     
+    func readMoreButtonTapped() {
+        _isDescExpanded.toggle()
+        ui?.reloadRow(at: IndexPath(row: 1, section: 1))
+    }
 }

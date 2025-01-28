@@ -22,8 +22,12 @@ public protocol PropertyDetailPresenterProtocol where Self: BasePresenter {
     var title: String { get }
     
     var sections: [PropertyDetailViewController.Model.Section] { get set }
+    var isDescExpanded: Bool { get set }
+    
+    func readMoreButtonTapped()
 }
 
 public protocol PropertyDetailPresenterDelegate: BasePresenterDelegate {
     func refresh()
+    func reloadRow(at indexPath: IndexPath)
 }

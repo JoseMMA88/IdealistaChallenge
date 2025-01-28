@@ -20,7 +20,7 @@ final class PropertiesListPresenter: BasePresenter, PropertiesListPresenterProto
     // MARK: - Presenter Protocol
     
     public var title: String {
-        return "Anuncios"
+        return "Properties"
     }
     
     var sections: [PropertiesListViewController.Model.Section] {
@@ -116,9 +116,11 @@ extension PropertiesListPresenter {
     }
     
     func didTapFavButton(_ model: PropertyCollectionViewCell.Model, at indexPath: IndexPath) {
-        model.isFavorite.toggle()
-        properties[indexPath.row] = model
-        _sections = []
-        ui?.reloadRow(at: indexPath)
+        if indexPath.row < properties.count {
+            model.isFavorite.toggle()
+            properties[indexPath.row] = model
+            _sections = []
+            ui?.reloadRow(at: indexPath)
+        }
     }
 }

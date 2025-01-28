@@ -35,7 +35,7 @@ public final class PropertyDetailViewController: UIViewController {
     
     // MARK: - Views
     
-    private lazy var tableView: UITableView = {
+    lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.backgroundColor = .white
         tableView.delegate = self
@@ -121,6 +121,7 @@ extension PropertyDetailViewController: UITableViewDataSource {
                 
                 return UITableViewCell()
             }
+            cell.delegate = self
             cell.configure(with: model)
             
             return cell
@@ -156,5 +157,23 @@ extension PropertyDetailViewController: PropertyDetailPresenterDelegate {
         sections = presenter.sections
         tableView.reloadData()
         tableView.layoutIfNeeded()
+    }
+    
+    public func reloadRow(at indexPath: IndexPath) {
+        DispatchQueue.main.async {
+            self.sections = self.presenter.sections
+            self.tableView.reloadRows(at: [indexPath], with: .none)
+            self.tableView.layoutIfNeeded()
+        }
+    }
+}
+
+
+// MARK: - DescriptionCell Delegate
+
+extension PropertyDetailViewController: DescriptionTableViewCellDelegate {
+    
+    public func readMoreTapped() {
+        presenter.readMoreButtonTapped()
     }
 }

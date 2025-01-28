@@ -7,6 +7,12 @@
 
 import UIKit
 
+// MARK: - Delegate
+
+protocol DescriptionTableViewCellDelegate: AnyObject {
+    func readMoreTapped()
+}
+
 // MARK: - Model
 
 extension DescriptionTableViewCell {
@@ -15,7 +21,6 @@ extension DescriptionTableViewCell {
         let currency: String
         let description: String
         let isExpanded: Bool
-        let action: Action
     }
 }
 
@@ -46,7 +51,7 @@ public final class DescriptionTableViewCell: UITableViewCell {
         return label
     }()
     
-    lazy private var readMoreButton: UIButton = {
+    lazy var readMoreButton: UIButton = {
         let button = UIButton()
         button.setTitle("Read more...", for: .normal)
         button.setTitleColor(UIColor(named: "AccentColor"), for: .normal)
@@ -91,7 +96,8 @@ public final class DescriptionTableViewCell: UITableViewCell {
     
     // MARK: - Propeties
     
-    var action: Action?
+    weak var delegate: DescriptionTableViewCellDelegate?
+    var model: Model?
     
     // MARK: - Functions
     
@@ -101,10 +107,10 @@ public final class DescriptionTableViewCell: UITableViewCell {
     }
     
     public func configure(with model: Model) {
+        self.model = model
         let price = formatPriceWithCurrency(model.price,
                                             withCurrency: model.currency)
         
-        action = model.action
         priceLabel.text = price
         descriptionLabel.text = model.description
         
@@ -130,7 +136,7 @@ public final class DescriptionTableViewCell: UITableViewCell {
     }
     
     @objc func expandAction() {
-        action?()
+        delegate?.readMoreTapped()
     }
 }
 
