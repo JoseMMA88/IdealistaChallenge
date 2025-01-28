@@ -20,7 +20,7 @@ final class PropertiesListPresenter: BasePresenter, PropertiesListPresenterProto
     // MARK: - Presenter Protocol
     
     public var title: String {
-        return "Properties"
+        return "property_list_title".localized
     }
     
     var sections: [PropertiesListViewController.Model.Section] {
@@ -91,7 +91,7 @@ final class PropertiesListPresenter: BasePresenter, PropertiesListPresenterProto
                                                          municipality: property.municipality,
                                                          address: property.address,
                                                          price: property.priceInfo.price?.amount ?? 0,
-                                                         currency: property.priceInfo.price?.currencySuffix ?? "$",
+                                                         currency: property.priceInfo.price?.currencySuffix.localized ?? "$",
                                                          rooms: property.rooms,
                                                          bathrooms: property.bathrooms,
                                                          propertyType: property.propertyType,

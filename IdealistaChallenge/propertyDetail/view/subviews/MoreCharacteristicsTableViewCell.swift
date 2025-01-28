@@ -36,7 +36,7 @@ public final class MoreCharacteristicsTableViewCell: UITableViewCell {
         let label = UILabel()
         label.textColor = .label
         label.font = .systemFont(ofSize: 23, weight: .bold)
-        label.text = "Características básicas"
+        label.text = "basic_features".localized
         
         return label
     }()
@@ -91,22 +91,26 @@ public final class MoreCharacteristicsTableViewCell: UITableViewCell {
     }
     
     public func configure(with model: Model) {
-        titleLabel.text = "Características básicas"
-        characteristicsStackView.addArrangedSubview(createCharacteristicView(with: "Localizacion:", value: model.flatLocation))
-        characteristicsStackView.addArrangedSubview(createCharacteristicView(with: "Metros cuadrados:", value: "\(model.constructedArea) m²"))
-        characteristicsStackView.addArrangedSubview(createCharacteristicView(with: "Piso:", value: model.floor))
-        characteristicsStackView.addArrangedSubview(createCharacteristicView(with: "Estado:", value: model.status))
+        titleLabel.text = "basic_features".localized
+        characteristicsStackView.addArrangedSubview(createCharacteristicView(with: "localization_bullet".localized,
+                                                                             value: model.flatLocation.localized.capitalized))
+        characteristicsStackView.addArrangedSubview(createCharacteristicView(with: "square_meters_bullet".localized,
+                                                                             value: "\(model.constructedArea) m²"))
+        characteristicsStackView.addArrangedSubview(createCharacteristicView(with: "floor_bullet".localized,
+                                                                             value: model.floor.localized.capitalized))
+        characteristicsStackView.addArrangedSubview(createCharacteristicView(with: "status_bullet".localized,
+                                                                             value: model.status.localized.capitalized))
         
         if model.lift {
-            characteristicsStackView.addArrangedSubview(createCharacteristicView(with: "Con ascensor"))
+            characteristicsStackView.addArrangedSubview(createCharacteristicView(with: "with_lift".localized))
         }
         
         if model.boxroom {
-            characteristicsStackView.addArrangedSubview(createCharacteristicView(with: "Con trastero"))
+            characteristicsStackView.addArrangedSubview(createCharacteristicView(with: "with_boxroom".localized))
         }
         
         if model.isDuplex {
-            characteristicsStackView.addArrangedSubview(createCharacteristicView(with: "Duplex"))
+            characteristicsStackView.addArrangedSubview(createCharacteristicView(with: "duplex".localized))
         }
     }
     

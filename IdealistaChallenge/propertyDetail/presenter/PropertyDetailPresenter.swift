@@ -22,7 +22,7 @@ final class PropertyDetailPresenter: BasePresenter, PropertyDetailPresenterProto
     // MARK: - Presenter Protocol
     
     public var title: String {
-        return "Property Detail"
+        return "property_detail_title".localized
     }
     
     var sections: [PropertyDetailViewController.Model.Section] {
@@ -69,8 +69,9 @@ final class PropertyDetailPresenter: BasePresenter, PropertyDetailPresenterProto
             .carousel(imagesUrls: propertyDetail.multimedia.images.compactMap { URL(string: $0.url) })
         ]
         
+        let currencySufix = propertyDetail.priceInfo.currencySuffix?.localized ?? "$"
         let descriptionCell: PropertyDetailViewController.Model.Product = .description(.init(price: propertyDetail.priceInfo.amount ?? 0,
-                                                                                             currency: propertyDetail.priceInfo.currencySuffix ?? "$",
+                                                                                             currency: currencySufix,
                                                                                              description: propertyDetail.propertyComment,
                                                                                              isExpanded: isDescExpanded))
         cells.append(descriptionCell)

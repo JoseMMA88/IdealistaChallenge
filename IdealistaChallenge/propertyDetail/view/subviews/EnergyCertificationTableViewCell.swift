@@ -30,7 +30,7 @@ public final class EnergyCertificationTableViewCell: UITableViewCell {
         let label = UILabel()
         label.textColor = .label
         label.font = .systemFont(ofSize: 23, weight: .bold)
-        label.text = "Certificado energético"
+        label.text = "energy_certification".localized
         
         return label
     }()
@@ -125,9 +125,9 @@ public final class EnergyCertificationTableViewCell: UITableViewCell {
     }
     
     public func configure(with model: Model) {
-        titleLabel.text = "Certificado energético"
-        energyConsumptionLabel.text = "- Consumo: "
-        emissionsLabel.text = "- Emisiones: "
+        titleLabel.text = "energy_certification".localized
+        energyConsumptionLabel.text = "consumption_bullet".localized
+        emissionsLabel.text = "emissions_bullet".localized
         
         energyConsumptionStackView.addArrangedSubview(energyConsumptionLabel)
         energyConsumptionStackView.addArrangedSubview(createTypeLabelView(with: model.emissionsType))

@@ -177,20 +177,20 @@ public final class GeneralInfoView: UIView {
     // MARK: - Functions
     
     public func configure(with model: Model) {
-        let title = "\(model.propertyType.capitalized) en \(model.address) \(model.municipality)"
+        let title = "\(model.propertyType.localized.capitalized) \("at".localized) \(model.address) \(model.municipality)"
         let location = "\(model.district), \(model.municipality)"
         let price = formatPriceWithCurrency(model.price,
                                             withCurrency: model.currency)
-        let roomsNumberString = model.rooms > 1 ? "\(model.rooms) rooms" : "\(model.rooms) room"
-        let bathNumberString = model.bathrooms > 1 ? "\(model.rooms) bathrooms" : "\(model.rooms) bathroom"
+        let roomsNumberString = model.rooms > 1 ? "\(model.rooms) \("rooms".localized)" : "\(model.rooms) \("room".localized)"
+        let bathNumberString = model.bathrooms > 1 ? "\(model.rooms) \("bathrooms".localized)" : "\(model.rooms) \("bathroom".localized)"
         
         titleLabel.text = title
         locationLabel.text = location
         priceLabel.text = price
         roomsNumberLabel.text = roomsNumberString
         bathNumberLabel.text = bathNumberString
-        propertyTypeLabel.text = model.propertyType.capitalized
-        operationTypeLabel.text = model.operationType.capitalized
+        propertyTypeLabel.text = model.propertyType.localized.capitalized
+        operationTypeLabel.text = model.operationType.localized.capitalized
     }
     
     private func formatPriceWithCurrency(_ price: Int,

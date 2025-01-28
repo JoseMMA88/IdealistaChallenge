@@ -70,7 +70,7 @@ final class PropertiesListPresenterTests: XCTestCase {
     func testPresenterInitialization() {
         XCTAssertNotNil(presenter)
         XCTAssertNotNil(presenter.interactor)
-        XCTAssertEqual(presenter.title, "Properties")
+        XCTAssertEqual(presenter.title, "property_list_title".localized)
     }
     
     func testFetchPropertyDetail() {

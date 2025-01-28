@@ -53,7 +53,7 @@ public final class DescriptionTableViewCell: UITableViewCell {
     
     lazy var readMoreButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Read more...", for: .normal)
+        button.setTitle("read_more".localized, for: .normal)
         button.setTitleColor(UIColor(named: "AccentColor"), for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.addTarget(self, action: #selector(expandAction), for: .touchUpInside)
@@ -116,10 +116,10 @@ public final class DescriptionTableViewCell: UITableViewCell {
         
         if model.isExpanded {
             descriptionLabel.numberOfLines = 0
-            readMoreButton.setTitle("Hide description...", for: .normal)
+            readMoreButton.setTitle("hide_description".localized, for: .normal)
         } else {
             descriptionLabel.numberOfLines = 8
-            readMoreButton.setTitle("Read more...", for: .normal)
+            readMoreButton.setTitle("read_more".localized, for: .normal)
         }
     }
     
