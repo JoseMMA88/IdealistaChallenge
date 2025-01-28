@@ -10,11 +10,15 @@ import UIKit
 
 class ImagesCarouselTableViewCell: UITableViewCell {
     
+    // MARK: - Properties
+    
     static var identifier: String {
         String(describing: self)
     }
     
     private var hostingController: UIHostingController<ImagesCarouselView>?
+    
+    // MARK: - Initializers
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -23,6 +27,8 @@ class ImagesCarouselTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Functions
     
     func configure(with urls: [URL]) {
         hostingController = UIHostingController(rootView: ImagesCarouselView(imageUrls: urls))

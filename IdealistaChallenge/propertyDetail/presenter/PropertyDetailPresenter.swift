@@ -96,6 +96,11 @@ final class PropertyDetailPresenter: BasePresenter, PropertyDetailPresenterProto
                                                                                                              emissionsType: emissionsType))
         cells.append(energyCertificationCell)
         
+        let mapCell: PropertyDetailViewController.Model.Product = .map(.init(latitude: propertyDetail.ubication.latitude,
+                                                                             longitude: propertyDetail.ubication.longitude))
+        
+        cells.append(mapCell)
+        
         return PropertyDetailViewController.Model.Section.init(product: cells)
     }
     

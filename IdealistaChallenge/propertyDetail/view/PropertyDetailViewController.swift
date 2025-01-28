@@ -16,6 +16,7 @@ extension PropertyDetailViewController {
             case description(DescriptionTableViewCell.Model)
             case moreCharacteristics(MoreCharacteristicsTableViewCell.Model)
             case energyCertification(EnergyCertificationTableViewCell.Model)
+            case map(MapTableViewCell.Model)
         }
         
         public struct Section {
@@ -51,6 +52,8 @@ public final class PropertyDetailViewController: UIViewController {
                            forCellReuseIdentifier: MoreCharacteristicsTableViewCell.identifier)
         tableView.register(EnergyCertificationTableViewCell.self,
                            forCellReuseIdentifier: EnergyCertificationTableViewCell.identifier)
+        tableView.register(MapTableViewCell.self,
+                           forCellReuseIdentifier: MapTableViewCell.identifier)
         
         return tableView
     }()
@@ -139,6 +142,16 @@ extension PropertyDetailViewController: UITableViewDataSource {
         case .energyCertification(let model):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: EnergyCertificationTableViewCell.identifier,
                                                            for: indexPath) as? EnergyCertificationTableViewCell else {
+                
+                return UITableViewCell()
+            }
+            cell.configure(with: model)
+            
+            return cell
+            
+        case .map(let model):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: MapTableViewCell.identifier,
+                                                           for: indexPath) as? MapTableViewCell else {
                 
                 return UITableViewCell()
             }
