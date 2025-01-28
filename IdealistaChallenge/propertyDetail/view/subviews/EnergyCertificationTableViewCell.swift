@@ -50,6 +50,13 @@ public final class EnergyCertificationTableViewCell: UITableViewCell {
         return stackView
     }()
     
+    lazy private var energyConsumptionView: UIView = {
+        let view = UIView()
+        view.fill(with: energyConsumptionStackView, edges: UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0))
+        
+        return view
+    }()
+    
     lazy private var emissionsLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
@@ -65,10 +72,17 @@ public final class EnergyCertificationTableViewCell: UITableViewCell {
         return stackView
     }()
     
+    lazy private var emissionsView: UIView = {
+        let view = UIView()
+        view.fill(with: emissionsStackView, edges: UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0))
+        
+        return view
+    }()
+    
     lazy private var energyView: UIView = {
         let stackView = UIStackView(arrangedSubviews: [
-            energyConsumptionStackView,
-            emissionsStackView
+            energyConsumptionView,
+            emissionsView
         ])
         stackView.spacing = 5
         stackView.axis = .vertical
