@@ -7,7 +7,6 @@
 
 `git clone https://github.com/JoseMMA88/IdealistaChallenge.git`
 
-
 ## Architecture: VIP+C 🏗️:
 This project uses the VIP+C architecture, which stands for View, Interactor, Presenter, and Coordinator.
 
@@ -22,7 +21,6 @@ This project uses the VIP+C architecture, which stands for View, Interactor, Pre
 * Separation of concerns: Clear responsibilities for each part of the app.
 * Modular: Easy to maintain and scale with decoupled components.
 
-
 ## Additional Features:
 * Pull-to-refresh 🔄: Implemented on the listing screen for refreshing the data.
 * Spanish and English Localization 🌍: The app is localized in these two languages.
@@ -31,10 +29,6 @@ This project uses the VIP+C architecture, which stands for View, Interactor, Pre
 * SwiftUI Integration 🖥️: Used alongside UIKit for images carousel cell at property detail screen.
 * Map View with Pin 📍: A map view showing the location of the property at property detail screen.
 * Tests and Coverage 🧪: Unit tests have been implemented to ensure the proper functionality of key features in the app.
-
-## Screenshots 📸:
-<img src="![Simulator Screenshot - iPhone 16 Pro - 2025-01-28 at 17 34 57](https://github.com/user-attachments/assets/5159e0a9-9ba2-4dd4-aa98-38af490a28cc)" width="300" height="600">
-
 
 ## How to Run the Project:
 1.    Open the project in Xcode.
