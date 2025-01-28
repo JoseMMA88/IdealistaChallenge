@@ -65,7 +65,7 @@ final class PropertiesListPresenter: BasePresenter, PropertiesListPresenterProto
         return PropertiesListViewController.Model.Section.init(product: cells)
     }
     
-    private func getProperties() {
+    private func getProperties(completion: (() -> Void)? = nil) {
         interactor.fetchProperties { [weak self] result in
             guard let self = self else { return }
             
@@ -75,6 +75,7 @@ final class PropertiesListPresenter: BasePresenter, PropertiesListPresenterProto
             case .failure(let error):
                 print(error.localizedDescription)
             }
+            completion?()
         }
     }
     
@@ -122,5 +123,10 @@ extension PropertiesListPresenter {
             _sections = []
             ui?.reloadRow(at: indexPath)
         }
+    }
+    
+    func refreshData(completion: @escaping () -> Void) {
+        _sections = []
+        getProperties(completion: completion)
     }
 }

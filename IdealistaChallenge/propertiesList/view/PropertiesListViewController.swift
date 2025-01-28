@@ -32,6 +32,8 @@ public final class PropertiesListViewController: UIViewController {
     
     // MARK: - Views
     
+    private let refreshControl = UIRefreshControl()
+    
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -73,10 +75,24 @@ public final class PropertiesListViewController: UIViewController {
         title = presenter.title
         presenter.viewDidLoad()
         view.fill(with:mainView)
+        
+        refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
     }
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+    }
+    
+    // MARK: - Functions
+    
+    @objc private func didPullToRefresh() {
+        presenter.refreshData { [weak self] in
+            DispatchQueue.main.async {
+                self?.refreshControl.endRefreshing()
+                self?.refresh()
+            }
+        }
     }
 }
 

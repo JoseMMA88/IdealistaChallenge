@@ -26,6 +26,7 @@ public protocol PropertiesListPresenterProtocol where Self: BasePresenter {
     
     func didSelect(at indexPath: IndexPath)
     func didTapFavButton(_ model:PropertyCollectionViewCell.Model, at indexPath: IndexPath)
+    func refreshData(completion: @escaping () -> Void)
 }
 
 public protocol PropertiesListPresenterDelegate: BasePresenterDelegate {

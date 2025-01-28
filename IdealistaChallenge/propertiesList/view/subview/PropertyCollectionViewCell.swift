@@ -104,6 +104,17 @@ public final class PropertyCollectionViewCell: UICollectionViewCell {
         return view
     }()
     
+    lazy private var contactStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            contactView,
+            VerticalSpacerView(space: 12)
+        ])
+        stackView.axis = .vertical
+        stackView.distribution = .fillProportionally
+        
+        return stackView
+    }()
+    
     lazy private var favImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "heart"))
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -140,10 +151,22 @@ public final class PropertyCollectionViewCell: UICollectionViewCell {
         return view
     }()
     
+    lazy private var favLabelView: UIView = {
+        let view = UIView()
+        view.center(view: favDateLabel)
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            view.heightAnchor.constraint(equalToConstant: 12)
+        ])
+        
+        return view
+    }()
+    
     lazy private var favStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             favImageView,
-            favDateLabel
+            favLabelView
         ])
         stackView.axis = .vertical
         stackView.distribution = .fillProportionally
@@ -153,7 +176,7 @@ public final class PropertyCollectionViewCell: UICollectionViewCell {
     
     lazy private var buttonsStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-            contactView,
+            contactStackView,
             favStackView
         ])
         stackView.distribution = .fillEqually
@@ -163,7 +186,7 @@ public final class PropertyCollectionViewCell: UICollectionViewCell {
     
     lazy private var buttonsView: UIView = {
         let view = UIView()
-        view.fill(with: buttonsStackView, edges: UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16))
+        view.fill(with: buttonsStackView, edges: UIEdgeInsets(top: 0, left: 16, bottom: 10, right: 16))
         
         return view
     }()
